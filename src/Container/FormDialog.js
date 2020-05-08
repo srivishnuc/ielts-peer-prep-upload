@@ -1,19 +1,28 @@
 import React from 'react'
 import {
     Button, withStyles, Dialog, DialogTitle,
-    DialogContent, DialogContentText,
-    TextField, DialogActions
+    DialogContent, DialogContentText, Grid,
+    DialogActions, Paper
 } from '@material-ui/core'
 import { postData } from '../Utils/Api'
 import SnackBar from '../Component/SnackBar'
+import Background from '../images/upload_bg.svg'
 
 const useStyles = (theme) => ({
     root: {
         width: 800,
         height: 600,
+        backgroundImage: `url(${Background})`,
+        backgroundSize: 'cover'
+    }, btnContainer: {
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        width: 800,
+        height: 600,
     },
 })
-function FormDialog() {
+function FormDialog(props) {
     const [open, setOpen] = React.useState(false);
     const [file, setFile] = React.useState();
     const [showSnackBar, setshowSnackBar] = React.useState(false)
@@ -43,15 +52,15 @@ function FormDialog() {
 
     const afterUpload = (res) => {
         handleClose()
-        if (res.status == "success") {
-            setshowSnackBar(true)
+        if (res.status === "success") {
             setsnackBarType('success')
             setsnackBarMsg(res.msg)
+            setshowSnackBar(true)
         }
         else {
-            setshowSnackBar(true)
             setsnackBarType('error')
             setsnackBarMsg(res.msg)
+            setshowSnackBar(true)
         }
     }
 
@@ -65,35 +74,43 @@ function FormDialog() {
 
     return (
         <div>
-            <Button variant="outlined" color="primary" onClick={handleClickOpen}>
-                Click to Upload
-            </Button>
-            <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
-                <DialogTitle id="form-dialog-title">Choose the picture</DialogTitle>
-                <DialogContent>
-                    <DialogContentText>
-                        Kindly select the image file less than 1MB
+            <Grid container justify="space-evenly">
+                <Grid item>
+                    <Paper elevation={2} className={props.classes.root}>
+                        <div className={props.classes.btnContainer}>
+                            <Button variant="outlined" color="secondary" onClick={handleClickOpen}>
+                                Click to Upload
+                        </Button>
+                        </div>
+                        <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
+                            <DialogTitle id="form-dialog-title">Choose the picture</DialogTitle>
+                            <DialogContent>
+                                <DialogContentText>
+                                    Kindly select the image file less than 1MB
                     </DialogContentText>
-                    <input
-                        id="image"
-                        label="Image Path"
-                        type="file"
-                        accept="image/*"
-                        onChange={handleSelect}
-                    />
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={handleClose} color="primary">
-                        Cancel
+                                <input
+                                    id="image"
+                                    label="Image Path"
+                                    type="file"
+                                    accept="image/*"
+                                    onChange={handleSelect}
+                                />
+                            </DialogContent>
+                            <DialogActions>
+                                <Button onClick={handleClose} color="primary">
+                                    Cancel
                  </Button>
-                    <Button onClick={handleUpload} color="primary">
-                        Upload
+                                <Button onClick={handleUpload} color="primary">
+                                    Upload
                  </Button>
-                </DialogActions>
-            </Dialog>
+                            </DialogActions>
+                        </Dialog>
+                    </Paper>
+                </Grid>
+            </Grid>
             <SnackBar open={showSnackBar} autoHideDuration={3000} type={snackBarType} message={snackBarMsg} handleClose={handleSnackBarClose} />
-        </div>
+        </div >
     );
 }
 
-export default FormDialog
+export default (withStyles)(useStyles)(FormDialog)
