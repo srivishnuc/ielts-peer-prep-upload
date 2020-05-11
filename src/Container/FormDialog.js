@@ -10,16 +10,19 @@ import Background from '../images/upload_bg.svg'
 
 const useStyles = (theme) => ({
     root: {
-        width: 800,
-        height: 600,
+        width: 'auto',
+        height: 'auto',
         backgroundImage: `url(${Background})`,
-        backgroundSize: 'cover'
+        backgroundSize: 'contain',
+        backgroundRepeat: 'no-repeat'
     }, btnContainer: {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        width: 800,
-        height: 600,
+        width: '80%',
+        height: 625,
+        margin: 0,
+        padding: 0
     },
 })
 function FormDialog(props) {
@@ -74,9 +77,10 @@ function FormDialog(props) {
 
     return (
         <div>
-            <Grid container justify="space-evenly">
-                <Grid item>
-                    <Paper elevation={2} className={props.classes.root}>
+            <Paper elevation={2} className={props.classes.root} xs={12}>
+
+                <Grid container justify="space-evenly">
+                    <Grid item>
                         <div className={props.classes.btnContainer}>
                             <Button variant="outlined" color="secondary" onClick={handleClickOpen}>
                                 Click to Upload
@@ -105,9 +109,10 @@ function FormDialog(props) {
                  </Button>
                             </DialogActions>
                         </Dialog>
-                    </Paper>
+                    </Grid>
                 </Grid>
-            </Grid>
+            </Paper>
+
             <SnackBar open={showSnackBar} autoHideDuration={3000} type={snackBarType} message={snackBarMsg} handleClose={handleSnackBarClose} />
         </div >
     );
